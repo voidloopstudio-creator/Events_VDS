@@ -1,0 +1,22 @@
+{
+  "name": "voidloops-event-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Voidloop's Studio public event site",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "hash-password": "node scripts/hash-password.js"
+  },
+  "engines": {
+    "node": ">=20 <26"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.58.0",
+    "bcryptjs": "^3.0.2",
+    "cookie-session": "^2.1.0",
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0"
+  }
+}
