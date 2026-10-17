@@ -158,3 +158,4 @@
 #player[data-lock-live-controls="true"]::-webkit-media-controls-timeline,
 #player[data-lock-live-controls="true"]::-webkit-media-controls-current-time-display,
 #player[data-lock-live-controls="true"]::-webkit-media-controls-time-remaining-display{display:none!important}
+.video-wrap .youtube-start{position:absolute;inset:0;z-index:4;margin:auto;width:max-content;height:max-content;max-width:calc(100% - 32px);border:1px solid #ffffff80;border-radius:999px;padding:14px 22px;background:#111c;color:#fff;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;backdrop-filter:blur(8px)}.video-wrap .youtube-start[hidden]{display:none}.video-wrap .youtube-start span{margin-right:8px}
