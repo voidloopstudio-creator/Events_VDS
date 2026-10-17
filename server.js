@@ -229,6 +229,10 @@ app.post("/api/admin/upload-link", requireSupabase, requireSameOrigin, requireSt
   const filePath = `events/${crypto.randomUUID()}.mp4`;
   const { data, error } = await supabase.storage.from(BUCKET).createSignedUploadUrl(filePath, { upsert: false });
   if (error) throw error;
+  if (!data?.token || !/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(data.token) || data.path !== filePath) {
+    console.error("Supabase returned an invalid signed upload link.");
+    return res.status(502).json({ error: "Supabase n’a pas fourni de lien d’envoi vidéo valide. Réessaie dans un instant." });
+  }
   res.json({ path: data.path || filePath, token: data.token, publicUrl: `${supabaseUrl.replace(/\/$/, "")}/storage/v1/object/public/${BUCKET}/${filePath}` });
 }));
 app.delete("/api/admin/video", requireSupabase, requireSameOrigin, requireStaff, asyncRoute(async (req, res) => {
