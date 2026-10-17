@@ -163,7 +163,8 @@ async function publicSnapshot() {
     announcements: content.announcements || [],
     comments,
     upload: content.upload || null,
-    storageBase: `${supabaseUrl.replace(/\/$/, "")}/storage/v1/object/public/${BUCKET}/`
+    storageBase: `${supabaseUrl.replace(/\/$/, "")}/storage/v1/object/public/${BUCKET}/`,
+    serverNow: Date.now()
   };
 }
 
@@ -197,6 +198,7 @@ app.put("/api/admin/state", requireSupabase, requireSameOrigin, requireStaff, as
   if (!state) return res.status(400).json({ error: "Les informations de l’événement sont invalides." });
   const previous = await readContent();
   if (state.status === "live" && previous.event_state?.status !== "live") {
+    state.startedAt = new Date().toISOString();
     const { error: resetError } = await supabase.from("live_comments").delete().gte("created_at", "1970-01-01T00:00:00.000Z");
     if (resetError) throw resetError;
   }
