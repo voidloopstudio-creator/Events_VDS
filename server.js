@@ -36,10 +36,11 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "https://cdn.jsdelivr.net"],
+      scriptSrc: ["'self'", "https://cdn.jsdelivr.net", "https://www.youtube.com"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       imgSrc: ["'self'", "data:", "blob:"],
       mediaSrc: ["'self'", "https://*.supabase.co", "https://*.storage.supabase.co", "blob:"],
+      frameSrc: ["'self'", "https://www.youtube.com", "https://www.youtube-nocookie.com"],
       connectSrc: ["'self'", "https://*.supabase.co", "https://*.storage.supabase.co"],
       objectSrc: ["'none'"],
       frameAncestors: ["'none'"],
@@ -106,7 +107,7 @@ function normalizeState(input) {
   if (!["upcoming", "live", "replay"].includes(input.status)) return null;
   const title = readText(input.title, 100);
   const source = typeof input.source === "string" ? input.source.slice(0, 2000) : "";
-  if (source && !/^(?:supabase:events\/[a-f0-9-]{36}\.mp4|https:\/\/[a-z0-9-]+\.supabase\.co\/storage\/v1\/object\/public\/event-media\/events\/[a-f0-9-]{36}\.mp4)$/i.test(source)) return null;
+  if (source && !/^(?:youtube:[A-Za-z0-9_-]{11}|supabase:events\/[a-f0-9-]{36}\.mp4|https:\/\/[a-z0-9-]+\.supabase\.co\/storage\/v1\/object\/public\/event-media\/events\/[a-f0-9-]{36}\.mp4)$/i.test(source)) return null;
   const result = { status: input.status, title, source, replays: [] };
   if (input.startedAt && typeof input.startedAt === "string" && Number.isFinite(Date.parse(input.startedAt))) result.startedAt = new Date(input.startedAt).toISOString();
   if (input.status === "live" && (!result.startedAt || !source)) return null;
@@ -119,7 +120,7 @@ function normalizeState(input) {
     result.replays = input.replays.slice(0, 50).map(item => {
       if (!item || typeof item !== "object") return null;
       const replaySource = typeof item.source === "string" ? item.source.slice(0, 2000) : "";
-      if (!/^supabase:events\/[a-f0-9-]{36}\.mp4$/i.test(replaySource)) return null;
+      if (!/^(?:youtube:[A-Za-z0-9_-]{11}|supabase:events\/[a-f0-9-]{36}\.mp4)$/i.test(replaySource)) return null;
       const endedAt = typeof item.endedAt === "string" && Number.isFinite(Date.parse(item.endedAt)) ? new Date(item.endedAt).toISOString() : "";
       return endedAt ? { title: readText(item.title, 100), source: replaySource, endedAt } : null;
     });
