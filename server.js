@@ -38,7 +38,7 @@ app.use(helmet({
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", "https://cdn.jsdelivr.net", "https://www.youtube.com"],
       styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", "data:", "blob:"],
+      imgSrc: ["'self'", "data:", "blob:", "https://i.ytimg.com"],
       mediaSrc: ["'self'", "https://*.supabase.co", "https://*.storage.supabase.co", "blob:"],
       frameSrc: ["'self'", "https://www.youtube.com", "https://www.youtube-nocookie.com"],
       connectSrc: ["'self'", "https://*.supabase.co", "https://*.storage.supabase.co"],
