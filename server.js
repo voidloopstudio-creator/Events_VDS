@@ -233,7 +233,7 @@ app.post("/api/admin/upload-link", requireSupabase, requireSameOrigin, requireSt
     console.error("Supabase returned an invalid signed upload link.");
     return res.status(502).json({ error: "Supabase n’a pas fourni de lien d’envoi vidéo valide. Réessaie dans un instant." });
   }
-  res.json({ path: data.path || filePath, token: data.token, publicUrl: `${supabaseUrl.replace(/\/$/, "")}/storage/v1/object/public/${BUCKET}/${filePath}` });
+  res.json({ path: data.path || filePath, token: data.token, signedUrl: data.signedUrl, publicUrl: `${supabaseUrl.replace(/\/$/, "")}/storage/v1/object/public/${BUCKET}/${filePath}` });
 }));
 app.delete("/api/admin/video", requireSupabase, requireSameOrigin, requireStaff, asyncRoute(async (req, res) => {
   const filePath = readText(req.body?.path, 100);
